@@ -10,6 +10,10 @@ const router = new VueRouter({
             path: '/',
             name: 'Upload',
             component: () => import('@/views/upload')
+        },
+        {
+            path: '*',
+            component: () => import('@/views/404')
         }
     ]
 })
