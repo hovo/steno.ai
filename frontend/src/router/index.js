@@ -12,6 +12,11 @@ const router = new VueRouter({
             component: () => import('@/views/upload')
         },
         {
+            path: '/transcribe',
+            name: 'Transcribe',
+            component: () => import('@/views/transcribe')
+        },
+        {
             path: '*',
             component: () => import('@/views/404')
         }
