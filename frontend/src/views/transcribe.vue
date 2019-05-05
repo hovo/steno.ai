@@ -18,7 +18,7 @@
         <footer>
             <div class="content">
                 <div class="column is-8 is-offset-2">
-                    <vue-plyr :options="options">
+                    <vue-plyr :options="playerOptions" ref="plyr">
                         <audio>
                             <source src="audio.mp3" type="audio/mp3"/>
                         </audio>
@@ -35,10 +35,18 @@ export default {
     name: 'transcribe',
     data() {
         return {
-            options: {
+            playerOptions: {
                 controls: ['play', 'progress', 'current-time']
             }
         }
+    },
+    computed: {
+        player() {
+            return this.$refs.plyr.player;
+        }
+    },
+    seek: function(time) {
+        this.player.currentTime = time;
     }
 }
 </script>
