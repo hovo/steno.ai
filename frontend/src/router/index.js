@@ -8,7 +8,8 @@ const router = new VueRouter({
     routes: [
         {
             path: '/',
-            name: 'Upload'
+            name: 'Upload',
+            component: () => import('@/views/upload')
         }
     ]
 })
