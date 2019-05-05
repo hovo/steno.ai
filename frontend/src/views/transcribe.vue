@@ -2,18 +2,11 @@
 <div class="container" style="display: flex; min-height: 100vh; flex-direction: column;">
     <div class="container" style="display: flex; min-height: 100vh; flex-direction: column;">
         <section class="articles" style="flex:1; overflow:auto;">
-            <div class="column is-4 is-offset-6">
-                <!-- <div class="field">
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Normal input">
-                    </div>
-                </div> -->
-            </div>
+            <div class="column is-4 is-offset-6"></div>
             <div class="column is-8 is-offset-2">
-                <h1 class="title" style="color: #022144">Recording.wav</h1>
-                <h6 class="subtitle is-6">
-                    Sun 5/5 - 12:40AM
-                </h6>
+                <h1 class="title" contenteditable="true">Recording.wav</h1>
+                <!-- contenteditable="true" -->
+                <h6 class="subtitle is-6">Sun 5/5 - 12:40AM</h6>
                 <hr class="hr">
                 <span style="color: #1B2733">
                     Creating a Single-page Application with Vue + Vue Router is dead simple. With Vue.js,
@@ -25,6 +18,11 @@
         <footer>
             <div class="content">
                 <div class="column is-8 is-offset-2">
+                    <vue-plyr :options="options">
+                        <audio>
+                            <source src="audio.mp3" type="audio/mp3"/>
+                        </audio>
+                    </vue-plyr>
                 </div>
             </div>
         </footer>
@@ -37,9 +35,31 @@ export default {
     name: 'transcribe',
     data() {
         return {
-
+            options: {
+                controls: ['play', 'progress', 'current-time']
+            }
         }
     }
 }
 </script>
+
+<style>
+.title {
+    color: #022144;
+}
+[contenteditable="true"]:active,
+[contenteditable="true"]:focus{
+    border: none;
+    outline: none;
+}
+.plyr__controls__item.plyr__progress__container {
+  width: 100% !important;
+}
+.plyr__controls {
+    background-color: #FBFBFB !important;
+    border: 1px solid #EFF0F2 !important;
+    border-radius: 5px !important;
+}
+</style>
+
 
