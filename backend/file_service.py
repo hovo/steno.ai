@@ -1,6 +1,9 @@
-from pydub import AudioSegment
-from google.cloud import storage
 import uuid
+from pydub import AudioSegment
+from google.cloud import storage, speech
+from google.cloud.speech import enums
+from google.cloud.speech import types
+from google.protobuf.json_format import MessageToJson
 
 GCS_BUCKET_NAME = "steno"
 BASE_GCS_URI = "https://storage.googleapis.com/steno/"
@@ -38,3 +41,22 @@ def upload_to_gcs(file):
     gcs_uri = BASE_GCS_URI + file_name
 
     return gcs_uri
+
+def async_transcribe(gcs_uri, sampling_rate):
+    """
+    Transcribe the given audio file asynchronously and output the word time
+    offsets.
+    """
+    client = speech.SpeechClient()
+
+    audio = types.RecognitionAudio(uri=gcs_uri)
+    config = types.RecognitionConfig(
+        encoding=enums.RecognitionConfig.AudioEncoding.FLAC,
+        sample_rate_hertz=sampling_rate,
+        language_code='en-US')
+    
+    operation = client.long_running_recognize(config, audio)
+    response = operation.result(timeout=90)
+
+    return MessageToJson(response)
+
