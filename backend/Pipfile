@@ -12,6 +12,7 @@ pydub = "*"
 google-cloud-speech = "*"
 oauth2client = "*"
 google-api-python-client = "*"
+redis = "*"
 
 [requires]
 python_version = "3.7"
