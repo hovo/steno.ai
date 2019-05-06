@@ -4,9 +4,10 @@ from google.cloud import storage, speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 from google.protobuf.json_format import MessageToJson
-
 from oauth2client.client import GoogleCredentials
 from googleapiclient import discovery
+from store import get_file_metadata
+import json
 
 GCS_BUCKET_NAME = "steno"
 BASE_GCS_URI = "gs://steno/"
@@ -49,19 +50,20 @@ def upload_to_gcs(file):
 
     return gcs_uri
 
-def async_transcribe(gcs_uri, sampling_rate, channels):
+def async_transcribe(id):
     """
     Transcribe the given audio file asynchronously and output the word time
     offsets.
     """
+    file_metadata = json.loads(get_file_metadata(id))
     client = speech.SpeechClient()
 
-    audio = types.RecognitionAudio(uri=gcs_uri)
+    audio = types.RecognitionAudio(uri=file_metadata['uri'])
     config = types.RecognitionConfig(
-        sample_rate_hertz=sampling_rate,
+        sample_rate_hertz=file_metadata['sampling_rate'],
         enable_word_time_offsets=True,
         enable_automatic_punctuation=True,
-        audio_channel_count=channels,
+        audio_channel_count=file_metadata['channels'],
         language_code='en-US')
 
     operation = client.long_running_recognize(config, audio)
