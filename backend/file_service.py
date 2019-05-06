@@ -51,7 +51,7 @@ def async_transcribe(gcs_uri, sampling_rate):
 
     audio = types.RecognitionAudio(uri=gcs_uri)
     config = types.RecognitionConfig(
-        encoding=enums.RecognitionConfig.AudioEncoding.FLAC,
+        enable_word_time_offsets=True,
         sample_rate_hertz=sampling_rate,
         language_code='en-US')
     
