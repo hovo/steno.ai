@@ -18,7 +18,7 @@ def upload():
 @app.route('/api/transcribe', methods=['GET'])
 def transcribe():
     params = request.get_json()
-    transcribe_out = async_transcribe(params['uri'], params['sampling_rate'])
+    transcribe_out = async_transcribe(params['uri'], params['sampling_rate'], params['channels'])
     return transcribe_out
 
 if __name__ == "__main__":

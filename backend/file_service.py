@@ -17,9 +17,9 @@ def audio_file_details(file):
     metadata = {
         "file_name": file.filename,
         "sampling_rate": af.frame_rate,
+        "channels": af.channels,
         "duration": af.duration_seconds
     }
-
     return metadata
 
 def upload_to_gcs(file):
@@ -43,7 +43,7 @@ def upload_to_gcs(file):
 
     return gcs_uri
 
-def async_transcribe(gcs_uri, sampling_rate):
+def async_transcribe(gcs_uri, sampling_rate, channels):
     """
     Transcribe the given audio file asynchronously and output the word time
     offsets.
@@ -54,7 +54,8 @@ def async_transcribe(gcs_uri, sampling_rate):
     config = types.RecognitionConfig(
         sample_rate_hertz=sampling_rate,
         enable_word_time_offsets=True,
-        audio_channel_count=2,
+        enable_automatic_punctuation=True,
+        audio_channel_count=channels,
         language_code='en-US')
     
     operation = client.long_running_recognize(config, audio)
