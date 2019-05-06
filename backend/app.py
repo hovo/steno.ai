@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from file_service import audio_file_details, upload_to_gcs
+from file_service import audio_file_details, upload_to_gcs, async_transcribe
 import file_service as fs
 
 app = Flask(__name__)
@@ -14,6 +14,12 @@ def upload():
     meta_data['uri'] = file_uri
 
     return jsonify(meta_data)
+
+@app.route('/api/transcribe', methods=['GET'])
+def transcribe():
+    params = request.get_json()
+    transcribe_out = async_transcribe(params['uri'], params['sampling_rate'])
+    return transcribe_out
 
 if __name__ == "__main__":
     app.run(port=8000)
