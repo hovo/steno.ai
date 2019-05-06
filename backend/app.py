@@ -23,10 +23,9 @@ def upload():
     response = {"id": id}
     return jsonify(response)
 
-@app.route('/api/transcribe', methods=['GET'])
-def transcribe():
-    params = request.get_json()
-    operation = async_transcribe(params['uri'], params['sampling_rate'], params['channels'])
+@app.route('/api/transcribe/<id>', methods=['GET'])
+def transcribe(id):
+    operation = async_transcribe(id)
     return operation
 
 @app.route('/api/operation/<name>', methods=['GET'])
