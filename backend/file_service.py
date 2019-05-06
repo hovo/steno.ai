@@ -5,6 +5,9 @@ from google.cloud.speech import enums
 from google.cloud.speech import types
 from google.protobuf.json_format import MessageToJson
 
+from oauth2client.client import GoogleCredentials
+from googleapiclient import discovery
+
 GCS_BUCKET_NAME = "steno"
 BASE_GCS_URI = "gs://steno/"
 #BASE_GCS_URI = "https://storage.googleapis.com/steno/"
@@ -57,9 +60,18 @@ def async_transcribe(gcs_uri, sampling_rate, channels):
         enable_automatic_punctuation=True,
         audio_channel_count=channels,
         language_code='en-US')
-    
+
     operation = client.long_running_recognize(config, audio)
-    response = operation.result(timeout=90)
 
-    return MessageToJson(response)
+    return MessageToJson(operation.operation)
 
+def poll_operation(name):
+    credentials = GoogleCredentials.get_application_default()
+    speech_service = discovery.build('speech', 'v1', credentials=credentials)
+
+    get_operation_request = speech_service.operations().get(name=name)
+    response = get_operation_request.execute()
+
+    if('done' in response):
+        return response['response']
+    return {"name": response['name']}

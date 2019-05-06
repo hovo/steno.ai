@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from file_service import audio_file_details, upload_to_gcs, async_transcribe
+from file_service import audio_file_details, upload_to_gcs, async_transcribe, poll_operation
 import file_service as fs
 
 app = Flask(__name__)
@@ -18,8 +18,10 @@ def upload():
 @app.route('/api/transcribe', methods=['GET'])
 def transcribe():
     params = request.get_json()
-    transcribe_out = async_transcribe(params['uri'], params['sampling_rate'], params['channels'])
-    return transcribe_out
+    if('name' in params):
+        return jsonify(poll_operation(params['name']))
+    operation = async_transcribe(params['uri'], params['sampling_rate'], params['channels'])
+    return operation
 
 if __name__ == "__main__":
     app.run(port=8000)
