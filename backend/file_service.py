@@ -3,13 +3,20 @@ from google.cloud import storage
 import uuid
 
 GCS_BUCKET_NAME = "steno"
+BASE_GCS_URI = "https://storage.googleapis.com/steno/"
 
-def get_sampling_rate(file):
+def audio_file_details(file):
     """
-    Returns the sampling rate for the audio file
+    Returns an object containing the sampling rate and the duration
     """
-    sampling_rate = AudioSegment.from_file(file, format="wav").frame_rate
-    return sampling_rate
+    af = AudioSegment.from_file(file, format="wav")
+    metadata = {
+        "file_name": file.filename,
+        "sampling_rate": af.frame_rate,
+        "duration": af.duration_seconds
+    }
+
+    return metadata
 
 def upload_to_gcs(file):
     """
@@ -24,8 +31,10 @@ def upload_to_gcs(file):
     bucket = storage_client.get_bucket(GCS_BUCKET_NAME)
 
     # Generate an UUID for the filename
-    filename = str(uuid.uuid4()) + "." + file.filename.split(".")[-1]
-    blob = bucket.blob(filename)
+    file_name = str(uuid.uuid4()) + "." + file.filename.split(".")[-1]
+    blob = bucket.blob(file_name)
     blob.upload_from_file(file)
 
-    return filename
+    gcs_uri = BASE_GCS_URI + file_name
+
+    return gcs_uri
