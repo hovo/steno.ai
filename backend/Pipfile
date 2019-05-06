@@ -9,6 +9,7 @@ verify_ssl = true
 flask = "*"
 google-cloud-storage = "*"
 pydub = "*"
+google-cloud-speech = "*"
 
 [requires]
 python_version = "3.7"
