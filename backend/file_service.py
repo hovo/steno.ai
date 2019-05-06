@@ -62,10 +62,12 @@ def async_transcribe(gcs_uri, sampling_rate, channels):
         language_code='en-US')
 
     operation = client.long_running_recognize(config, audio)
-
     return MessageToJson(operation.operation)
 
 def poll_operation(name):
+    """
+    Polls the status of the long running operation
+    """
     credentials = GoogleCredentials.get_application_default()
     speech_service = discovery.build('speech', 'v1', credentials=credentials)
 
