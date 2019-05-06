@@ -32,13 +32,16 @@ def upload_to_gcs(file):
     Returns
     -------
     string
-        Uploaded file name
+        Google Cloud Storage URI
     """
     storage_client = storage.Client()
     bucket = storage_client.get_bucket(GCS_BUCKET_NAME)
 
     # Generate an UUID for the filename
-    file_name = str(uuid.uuid4()) + "." + file.filename.split(".")[-1]
+    id = str(uuid.uuid4())
+    file_type = file.filename.split(".")[-1]
+    file_name = "{}.{}".format(id, file_type)
+
     blob = bucket.blob(file_name)
     blob.upload_from_file(file)
 
