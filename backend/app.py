@@ -1,19 +1,27 @@
 from flask import Flask, jsonify, request
-from file_service import audio_file_details, upload_to_gcs, async_transcribe, poll_operation
-import file_service as fs
+from file_service import get_metadata, upload_to_gcs, async_transcribe, poll_operation
+from store import cache_metadata
+import uuid
+import json
 
 app = Flask(__name__)
 
 @app.route('/api/upload', methods=['POST'])
 def upload():
-    f = request.files['file']
-    file_uri = upload_to_gcs(f)
+    file = request.files['file']
+    gcs_uri = upload_to_gcs(file)
 
-    # Construct audio file meta data
-    meta_data = audio_file_details(f)
-    meta_data['uri'] = file_uri
+    # Generate an UUID for redis key
+    id = str(uuid.uuid4())
+    metadata = get_metadata(file)
+    metadata['uri'] = gcs_uri
+    val = json.dumps(metadata)
 
-    return jsonify(meta_data)
+    # Cache file metadata on Redis
+    cache_metadata(id, val)
+
+    response = {"id": id}
+    return jsonify(response)
 
 @app.route('/api/transcribe', methods=['GET'])
 def transcribe():
