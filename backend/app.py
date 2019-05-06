@@ -18,10 +18,13 @@ def upload():
 @app.route('/api/transcribe', methods=['GET'])
 def transcribe():
     params = request.get_json()
-    if('name' in params):
-        return jsonify(poll_operation(params['name']))
     operation = async_transcribe(params['uri'], params['sampling_rate'], params['channels'])
     return operation
+
+@app.route('/api/operation/<name>', methods=['GET'])
+def operation_status(name):
+    response = poll_operation(name)
+    return jsonify(response)
 
 if __name__ == "__main__":
     app.run(port=8000)
