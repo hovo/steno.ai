@@ -12,7 +12,7 @@ GCS_BUCKET_NAME = "steno"
 BASE_GCS_URI = "gs://steno/"
 #BASE_GCS_URI = "https://storage.googleapis.com/steno/"
 
-def audio_file_details(file):
+def get_metadata(file):
     """
     Returns an object containing the sampling rate and the duration
     """
