@@ -6,7 +6,8 @@ from google.cloud.speech import types
 from google.protobuf.json_format import MessageToJson
 
 GCS_BUCKET_NAME = "steno"
-BASE_GCS_URI = "https://storage.googleapis.com/steno/"
+BASE_GCS_URI = "gs://steno/"
+#BASE_GCS_URI = "https://storage.googleapis.com/steno/"
 
 def audio_file_details(file):
     """
