@@ -52,8 +52,9 @@ def async_transcribe(gcs_uri, sampling_rate):
 
     audio = types.RecognitionAudio(uri=gcs_uri)
     config = types.RecognitionConfig(
-        enable_word_time_offsets=True,
         sample_rate_hertz=sampling_rate,
+        enable_word_time_offsets=True,
+        audio_channel_count=2,
         language_code='en-US')
     
     operation = client.long_running_recognize(config, audio)
