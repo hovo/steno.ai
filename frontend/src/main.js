@@ -10,7 +10,6 @@ import store from '@/store'
 Vue.config.productionTip = false
 Vue.use(Buefy)
 Vue.use(VuePlyr)
-Vue.use(Vuex)
 
 new Vue({
   render: h => h(App),
