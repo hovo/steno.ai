@@ -49,6 +49,11 @@ export default {
             sampleData: jsonObj
         }
     },
+    mounted() {
+        this.player.on('timeupdate', () => {
+            console.log(this.player.currentTime)
+        })
+    },
     computed: {
         player() {
             return this.$refs.plyr.player;
