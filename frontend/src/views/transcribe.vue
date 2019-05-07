@@ -1,6 +1,6 @@
 <template>
-<div class="container" style="display: flex; min-height: 100vh; flex-direction: column;">
-    <div class="container" style="display: flex; min-height: 100vh; flex-direction: column;">
+<div class="container" style="min-height: 100vh;">
+    <div class="container">
         <section class="articles" style="flex:1">
             <div class="column is-4 is-offset-6"></div>
             <div class="column is-8 is-offset-2">
@@ -8,7 +8,7 @@
                 <h6 class="subtitle is-6">Sun 5/5 - 12:40AM</h6>
                 <hr class="hr">
             </div>
-            <div class="column is-8 is-offset-2 doc">
+            <div class="column is-8 is-offset-2 doc" style="margin-bottom: 55px;">
                 <div>
                     <div class="alternative" v-for="(result, idx) in sampleData.results" :key="idx">
                         <span v-for="(wordObj, word_idx) in result.alternatives[0].words" 
