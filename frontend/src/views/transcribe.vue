@@ -5,7 +5,6 @@
             <div class="column is-4 is-offset-6"></div>
             <div class="column is-8 is-offset-2">
                 <h1 class="title" contenteditable="true">Recording.wav</h1>
-                <!-- contenteditable="true" -->
                 <h6 class="subtitle is-6">Sun 5/5 - 12:40AM</h6>
                 <hr class="hr">
             </div>
@@ -22,8 +21,8 @@
                 </div>
             </div>
         </section>
-        <footer>
-            <div class="content">
+        <nav class="navbar is-fixed-bottom">
+            <div class="container">
                 <div class="column is-8 is-offset-2">
                     <vue-plyr :options="playerOptions" ref="plyr">
                         <audio>
@@ -32,9 +31,10 @@
                     </vue-plyr>
                 </div>
             </div>
-        </footer>
+        </nav>
     </div>
 </div>
+
 </template>
 
 <script>
