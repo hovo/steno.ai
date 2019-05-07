@@ -29,6 +29,16 @@ export default {
         return {
             file: null
         }
+    },
+    watch: {
+        file: function(newFile, oldFile) {
+            this.uploadFile(newFile)
+        }
+    },
+    methods: {
+        uploadFile(file) {
+            this.$loading.open()
+        }
     }
 }
 </script>
