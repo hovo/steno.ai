@@ -8,11 +8,14 @@
                 <!-- contenteditable="true" -->
                 <h6 class="subtitle is-6">Sun 5/5 - 12:40AM</h6>
                 <hr class="hr">
-                <span style="color: #1B2733">
-                    Creating a Single-page Application with Vue + Vue Router is dead simple. With Vue.js,
-                    we are already composing our application with components. When adding Vue Router to the mix, all we need to do is 
-                    map our components to the routes and let Vue Router know where to render them. Here's a basic example:
-                </span>
+                <div>
+                    <div class="alternative" v-for="(result, idx) in sampleData.results" :key="idx">
+                        <span v-for="(wordObj, word_idx) in result.alternatives[0].words" 
+                            :key="word_idx" class="word">
+                            {{wordObj.word}}
+                        </span>
+                    </div>
+                </div>
             </div>
         </section>
         <footer>
@@ -31,13 +34,15 @@
 </template>
 
 <script>
+import jsonObj from '@/test-response.js'
 export default {
     name: 'transcribe',
     data() {
         return {
             playerOptions: {
                 controls: ['play', 'progress', 'current-time']
-            }
+            },
+            sampleData: jsonObj
         }
     },
     computed: {
@@ -45,8 +50,10 @@ export default {
             return this.$refs.plyr.player;
         }
     },
-    seek: function(time) {
-        this.player.currentTime = time;
+    methods: {
+        see: function(time) {
+            this.player.currentTime = time;
+        }
     }
 }
 </script>
@@ -67,6 +74,19 @@ export default {
     background-color: #FBFBFB !important;
     border: 1px solid #EFF0F2 !important;
     border-radius: 5px !important;
+}
+.alternative {
+    margin-bottom: 10px;
+}
+.word {
+    color: #1B2733;
+    display:inline-block;
+    padding: 0px 2px;
+}
+.word:hover {
+    background-color: #0061D5;
+    border-radius: 4px;
+    color: white;
 }
 </style>
 
