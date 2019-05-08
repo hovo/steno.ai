@@ -13,7 +13,8 @@
                     <div class="alternative" v-for="(result, idx) in sampleData.results" :key="idx">
                         <span v-for="(wordObj, word_idx) in result.alternatives[0].words" 
                             :key="word_idx"
-                            class="word"
+                            class="word" 
+                            :class="{'word-active': (idx == currentWord.alt & word_idx == currentWord.word)}"
                             @click="seek(idx, word_idx)">
                             {{wordObj.word}}
                         </span>
@@ -46,12 +47,32 @@ export default {
             playerOptions: {
                 controls: ['play', 'progress', 'current-time']
             },
-            sampleData: jsonObj
+            sampleData: jsonObj,
+            currentWord: {
+                alt: 0,
+                word: 0
+            }
         }
     },
     mounted() {
         this.player.on('timeupdate', () => {
-            console.log(this.player.currentTime)
+            console.log(this.currentWord)
+            var words = this.sampleData.results[this.currentWord.alt].alternatives[0].words
+            var wordsLen = words.length
+            var currWord = words[this.currentWord.word]
+
+            var currentWordStartTime = this.sanitizeTime(currWord.startTime)
+            var currentWordEndTime = this.sanitizeTime(currWord.endTime)
+
+            var playerTime = this.player.currentTime
+            if(!(playerTime >= currentWordStartTime & playerTime <= currentWordEndTime)) {
+                if(this.currentWord.word < wordsLen-1){
+                    this.currentWord.word += 1
+                } else {
+                    this.currentWord.alt += 1
+                    this.currentWord.word = 0
+                }
+            }
         })
     },
     computed: {
@@ -60,10 +81,17 @@ export default {
         }
     },
     methods: {
+        sanitizeTime: function(timeStr) {
+            timeStr.substring(0, timeStr.length-1)
+            timeStr = parseFloat(timeStr)
+            return timeStr
+        },
         seek: function(resIdx, wordIdx) {
             var startTime = this.sampleData.results[resIdx].alternatives[0].words[wordIdx].startTime
-            startTime = startTime.substring(0, startTime.length-1) // Removes time unit (s) from the string
-            startTime = parseFloat(startTime) // Cast string into float
+            startTime = this.sanitizeTime(startTime)
+
+            this.currentWord.alt = resIdx
+            this.currentWord.word = wordIdx
 
             this.player.currentTime = startTime;
         }
@@ -72,44 +100,7 @@ export default {
 </script>
 
 <style>
-.sticky{
-  position: fixed;
-  top: 0;
-  overflow: hidden;
-  z-index: 10;
-}
-.title {
-    color: #022144;
-}
-.doc {
-    padding-top: 0;
-}
-[contenteditable="true"]:active,
-[contenteditable="true"]:focus{
-    border: none;
-    outline: none;
-}
-.plyr__controls__item.plyr__progress__container {
-  width: 100% !important;
-}
-.plyr__controls {
-    background-color: #FBFBFB !important;
-    border: 1px solid #EFF0F2 !important;
-    border-radius: 5px !important;
-}
-.alternative {
-    margin-bottom: 10px;
-}
-.word {
-    color: #1B2733;
-    display:inline-block;
-    padding: 0px 2px;
-}
-.word:hover {
-    background-color: #0061D5;
-    border-radius: 4px;
-    color: white;
-}
+@import '../styles/doc.css';
 </style>
 
 

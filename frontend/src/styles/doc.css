@@ -1,0 +1,37 @@
+.title {
+    color: #022144;
+}
+.doc {
+    padding-top: 0;
+}
+[contenteditable="true"]:active,
+[contenteditable="true"]:focus{
+    border: none;
+    outline: none;
+}
+.plyr__controls__item.plyr__progress__container {
+  width: 100% !important;
+}
+.plyr__controls {
+    background-color: #FBFBFB !important;
+    border: 1px solid #EFF0F2 !important;
+    border-radius: 5px !important;
+}
+.alternative {
+    margin-bottom: 10px;
+}
+.word {
+    color: #1B2733;
+    display:inline-block;
+    padding: 0px 2px;
+}
+.word:hover {
+    background-color: #0061D5;
+    border-radius: 4px;
+    color: white;
+}
+.word-active {
+    background-color: #0061D5;
+    border-radius: 4px;
+    color: white;
+}
