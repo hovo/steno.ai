@@ -4,7 +4,7 @@
         <section class="articles" style="flex:1">
             <div class="column is-4 is-offset-6"></div>
             <div class="column is-8 is-offset-2">
-                <h1 class="title" contenteditable="true">Recording.wav</h1>
+                <h1 class="title" contenteditable="true">Ted_talk.wav</h1>
                 <h6 class="subtitle is-6">Sun 5/5 - 12:40AM</h6>
                 <hr class="hr">
             </div>
@@ -56,7 +56,7 @@ export default {
     },
     mounted() {
         this.player.on('timeupdate', () => {
-            console.log(this.currentWord)
+            // THE APPROACH IS WRONG. I SHOULD ITERATE OVER THE WORDS
             var words = this.sampleData.results[this.currentWord.alt].alternatives[0].words
             var wordsLen = words.length
             var currWord = words[this.currentWord.word]
@@ -65,13 +65,18 @@ export default {
             var currentWordEndTime = this.sanitizeTime(currWord.endTime)
 
             var playerTime = this.player.currentTime
-            if(!(playerTime >= currentWordStartTime & playerTime <= currentWordEndTime)) {
-                if(this.currentWord.word < wordsLen-1){
-                    this.currentWord.word += 1
-                } else {
-                    this.currentWord.alt += 1
-                    this.currentWord.word = 0
+            console.log(playerTime)
+            console.log(currWord)
+            if(!(playerTime >= currentWordStartTime && playerTime <= currentWordEndTime)) {
+                if(playerTime >= currentWordStartTime) {
+                    if(this.currentWord.word < wordsLen-1){
+                        this.currentWord.word += 1
+                    } else {
+                        this.currentWord.alt += 1
+                        this.currentWord.word = 0
+                    }
                 }
+                
             }
         })
     },
