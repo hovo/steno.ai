@@ -65,18 +65,14 @@ export default {
             var currentWordEndTime = this.sanitizeTime(currWord.endTime)
 
             var playerTime = this.player.currentTime
-            console.log(playerTime)
-            console.log(currWord)
-            if(!(playerTime >= currentWordStartTime && playerTime <= currentWordEndTime)) {
-                if(playerTime >= currentWordStartTime) {
-                    if(this.currentWord.word < wordsLen-1){
-                        this.currentWord.word += 1
-                    } else {
-                        this.currentWord.alt += 1
-                        this.currentWord.word = 0
-                    }
+
+            if(currentWordEndTime <= playerTime) {
+                if(this.currentWord.word < wordsLen-1){
+                    this.currentWord.word += 1
+                } else {
+                    this.currentWord.alt += 1
+                    this.currentWord.word = 0
                 }
-                
             }
         })
     },
