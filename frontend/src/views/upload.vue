@@ -8,9 +8,10 @@
                     <h6 class="subtitle is-6">.wav, .mp3, .m4a, .flac – up to 20 MB</h6>
                     <b-field class="file" style="display: inline-flex">
                         <b-upload v-model="file" @input="uploadFile(file)">
-                            <a class="button is-primary">
+                            <b-button class="is-primary" :loading="loadingState">Upload</b-button>
+                            <!-- <a class="button is-primary">
                                 <span>Upload</span>
-                            </a>
+                            </a> -->
                         </b-upload>
                         <span class="file-name" v-if="file">
                             {{ file.name }}
@@ -27,7 +28,8 @@ export default {
     name: 'upload',
     data() {
         return {
-            file: null
+            file: null,
+            loadingState: false
         }
     },
     methods: {
@@ -42,7 +44,8 @@ export default {
                 })
                 return;
             } else {
-                this.$loading.open()
+                this.loadingState = true
+                // TODO: MAKE API CALL
             }
         }
     }
