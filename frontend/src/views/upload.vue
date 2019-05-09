@@ -7,7 +7,7 @@
                     <h5 class="title is-5">Upload an audio file to transcribe</h5>
                     <h6 class="subtitle is-6">.wav, .mp3, .m4a, .flac – up to 20 MB</h6>
                     <b-field class="file" style="display: inline-flex">
-                        <b-upload v-model="file">
+                        <b-upload v-model="file" @input="uploadFile(file)">
                             <a class="button is-primary">
                                 <span>Upload</span>
                             </a>
@@ -30,14 +30,20 @@ export default {
             file: null
         }
     },
-    watch: {
-        file: function(newFile, oldFile) {
-            this.uploadFile(newFile)
-        }
-    },
     methods: {
         uploadFile(file) {
-            this.$loading.open()
+            if (file.size > 1024 * 1024 * 20) {
+                this.file = null
+                this.$notification.open({
+                    duration: 2000,
+                    message: 'File larger than 25 MB',
+                    type: 'is-danger',
+                    position: 'is-bottom'
+                })
+                return;
+            } else {
+                this.$loading.open()
+            }
         }
     }
 }
