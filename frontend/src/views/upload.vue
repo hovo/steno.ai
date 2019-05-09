@@ -5,13 +5,10 @@
                 <div class="column is-8 is-offset-2">
                     <img src="../assets/file_upload.png">
                     <h5 class="title is-5">Upload an audio file to transcribe</h5>
-                    <h6 class="subtitle is-6">.wav, .mp3, .m4a, .flac – up to 20 MB</h6>
+                    <h6 class="subtitle is-6">.wav, .mp3, .m4a, .flac – up to 25 MB</h6>
                     <b-field class="file" style="display: inline-flex">
                         <b-upload v-model="file" @input="uploadFile(file)">
                             <b-button class="is-primary" :loading="loadingState">Upload</b-button>
-                            <!-- <a class="button is-primary">
-                                <span>Upload</span>
-                            </a> -->
                         </b-upload>
                         <span class="file-name" v-if="file">
                             {{ file.name }}
@@ -34,7 +31,7 @@ export default {
     },
     methods: {
         uploadFile(file) {
-            if (file.size > 1024 * 1024 * 20) {
+            if (file.size > 1024 * 1024 * 25) {
                 this.file = null
                 this.$notification.open({
                     duration: 2000,
